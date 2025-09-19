@@ -41,30 +41,49 @@ jobs:
  #              -d "{\"slot\":\"${{ steps.slot.outputs.slot }}\"}" \
  #              "${{ secrets.DIET_PLAN_AUTOMATOR }}"
                
-      - name: Send morning slot (06:00 IST)
-        if: github.event.schedule == '30 0 * * *'
+      - name: Determine slot and call Make webhook
         run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"slot":"morning"}' \
-          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+          hour=$(date +'%H')
+          case "$hour" in
+            0) SLOT="morning" ;;
+            4) SLOT="midday" ;;
+            14) SLOT="evening" ;;
+            15) SLOT="night" ;;
+            *) SLOT="unknown" ;;
+          esac
 
-      - name: Send midday slot (10:00 IST)
-        if: github.event.schedule == '30 4 * * *'
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"slot":"midday"}' \
-          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+          if [ "$SLOT" != "unknown" ]; then
+            echo "Determined slot: $SLOT"
+            curl -X POST -H "Content-Type: application/json" \
+                 -d "{\"slot\":\"$SLOT\"}" \
+                 "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+          else
+            echo "No slot to send for hour $hour"
+          fi
+#      - name: Send morning slot (06:00 IST)
+#        if: github.event.schedule == '30 0 * * *'
+#        run: |
+#          curl -X POST -H "Content-Type: application/json" \
+#          -d '{"slot":"morning"}' \
+#          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
 
-      - name: Send evening slot (20:00 IST)
-        if: github.event.schedule == '30 14 * * *'
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"slot":"evening"}' \
-          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+#      - name: Send midday slot (10:00 IST)
+#        if: github.event.schedule == '30 4 * * *'
+#        run: |
+#          curl -X POST -H "Content-Type: application/json" \
+#          -d '{"slot":"midday"}' \
+#          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
 
-      - name: Send night slot (21:00 IST)
-        if: github.event.schedule == '30 15 * * *'
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"slot":"night"}' \
-          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+#      - name: Send evening slot (20:00 IST)
+#        if: github.event.schedule == '30 14 * * *'
+#         run: |
+#         curl -X POST -H "Content-Type: application/json" \
+#          -d '{"slot":"evening"}' \
+#          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+
+#      - name: Send night slot (21:00 IST)
+#        if: github.event.schedule == '30 15 * * *'
+#        run: |
+#          curl -X POST -H "Content-Type: application/json" \
+#          -d '{"slot":"night"}' \
+#          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
