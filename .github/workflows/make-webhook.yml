@@ -47,8 +47,8 @@ jobs:
           case "$hour" in
             0) SLOT="morning" ;;
             4) SLOT="midday" ;;
-            12) SLOT="evening" ;;
-            13) SLOT="night" ;;
+            14) SLOT="evening" ;;
+            16) SLOT="night" ;;
             *) SLOT="unknown" ;;
           esac
 
