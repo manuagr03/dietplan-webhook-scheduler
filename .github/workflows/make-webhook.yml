@@ -33,6 +33,14 @@ jobs:
           fi
           echo "slot=$SLOT" >> $GITHUB_OUTPUT
           echo "Determined slot: $SLOT"
+
+      - name: Call Make webhook
+        if: steps.slot.outputs.slot != 'unknown'
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+               -d "{\"slot\":\"${{ steps.slot.outputs.slot }}\"}" \
+               "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+               
       - name: Send morning slot (06:00 IST)
         if: github.event.schedule == '30 0 * * *'
         run: |
