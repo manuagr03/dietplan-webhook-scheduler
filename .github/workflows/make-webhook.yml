@@ -1,11 +1,11 @@
 name: Trigger Make Webhook
 
-on:
-  workflow_dispatch:       # allows manual run
-    inputs:
-      slot:
-        description: 'Slot to trigger manually (morning, midday, evening, night)'
-        required: false
+#on:
+#  workflow_dispatch:       # allows manual run
+#    inputs:
+#      slot:
+#        description: 'Slot to trigger manually (morning, midday, evening, night)'
+#        required: false
   schedule:
     - cron: '30 0 * * *'   # 06:00 IST
     - cron: '30 4 * * *'   # 10:00 IST
@@ -16,30 +16,30 @@ jobs:
   call-make:
     runs-on: ubuntu-latest
     steps:
-      - name: Determine slot
-        id: slot
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.slot }}" ]; then
-            SLOT="${{ github.event.inputs.slot }}"
-          else
-            hour=$(date +'%H')
-            case "$hour" in
-              0) SLOT="morning" ;;
-              4) SLOT="midday" ;;
-              14) SLOT="evening" ;;
-              15) SLOT="night" ;;
-              *) SLOT="unknown" ;;
-            esac
-          fi
-          echo "slot=$SLOT" >> $GITHUB_OUTPUT
-          echo "Determined slot: $SLOT"
+ #     - name: Determine slot
+ #       id: slot
+ #       run: |
+ #         if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.slot }}" ]; then
+ #           SLOT="${{ github.event.inputs.slot }}"
+ #         else
+ #           hour=$(date +'%H')
+ #           case "$hour" in
+ #             0) SLOT="morning" ;;
+ #             4) SLOT="midday" ;;
+ #             14) SLOT="evening" ;;
+ #             15) SLOT="night" ;;
+ #             *) SLOT="unknown" ;;
+ #           esac
+ #         fi
+ #         echo "slot=$SLOT" >> $GITHUB_OUTPUT
+ #         echo "Determined slot: $SLOT"
 
-      - name: Call Make webhook
-        if: steps.slot.outputs.slot != 'unknown'
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-               -d "{\"slot\":\"${{ steps.slot.outputs.slot }}\"}" \
-               "${{ secrets.DIET_PLAN_AUTOMATOR }}"
+ #     - name: Call Make webhook
+ #       if: steps.slot.outputs.slot != 'unknown'
+ #       run: |
+ #         curl -X POST -H "Content-Type: application/json" \
+ #              -d "{\"slot\":\"${{ steps.slot.outputs.slot }}\"}" \
+ #              "${{ secrets.DIET_PLAN_AUTOMATOR }}"
                
       - name: Send morning slot (06:00 IST)
         if: github.event.schedule == '30 0 * * *'
