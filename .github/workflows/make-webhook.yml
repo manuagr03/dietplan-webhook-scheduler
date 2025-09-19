@@ -12,6 +12,30 @@ jobs:
   call-make:
     runs-on: ubuntu-latest
     steps:
-      - name: Call Make webhook
+      - name: Send morning slot (06:00 IST)
+        if: github.event.schedule == '30 0 * * *'
         run: |
-          curl -X POST "${{ secrets.MAKE_WEBHOOK_URL }}"
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"slot":"morning"}' \
+          "${{ secrets.MAKE_WEBHOOK_URL }}"
+
+      - name: Send midday slot (10:00 IST)
+        if: github.event.schedule == '30 4 * * *'
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"slot":"midday"}' \
+          "${{ secrets.MAKE_WEBHOOK_URL }}"
+
+      - name: Send evening slot (20:00 IST)
+        if: github.event.schedule == '30 14 * * *'
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"slot":"evening"}' \
+          "${{ secrets.MAKE_WEBHOOK_URL }}"
+
+      - name: Send night slot (21:00 IST)
+        if: github.event.schedule == '30 15 * * *'
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"slot":"night"}' \
+          "${{ secrets.MAKE_WEBHOOK_URL }}"
