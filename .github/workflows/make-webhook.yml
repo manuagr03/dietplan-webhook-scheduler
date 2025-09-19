@@ -9,8 +9,8 @@ name: Trigger Make Webhook
   schedule:
     - cron: '30 0 * * *'   # 06:00 IST
     - cron: '30 4 * * *'   # 10:00 IST
-    - cron: '30 14 * * *'  # 20:00 IST
-    - cron: '30 15 * * *'  # 21:00 IST
+    - cron: '45 10 * * *'  # 20:00 IST
+    - cron: '50 10 * * *'  # 21:00 IST
 
 jobs:
   call-make:
