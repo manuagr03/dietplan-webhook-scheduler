@@ -17,25 +17,25 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d '{"slot":"morning"}' \
-          "${{ secrets.MAKE_WEBHOOK_URL }}"
+          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
 
       - name: Send midday slot (10:00 IST)
         if: github.event.schedule == '30 4 * * *'
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d '{"slot":"midday"}' \
-          "${{ secrets.MAKE_WEBHOOK_URL }}"
+          "${{ secrets.DIET_PLAN_AUTOMATORL }}"
 
       - name: Send evening slot (20:00 IST)
         if: github.event.schedule == '30 14 * * *'
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d '{"slot":"evening"}' \
-          "${{ secrets.MAKE_WEBHOOK_URL }}"
+          "${{ secrets.DIET_PLAN_AUTOMATORL }}"
 
       - name: Send night slot (21:00 IST)
         if: github.event.schedule == '30 15 * * *'
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d '{"slot":"night"}' \
-          "${{ secrets.DIET_PLAN_CREATOR }}"
+          "${{ secrets.DIET_PLAN_AUTOMATOR }}"
