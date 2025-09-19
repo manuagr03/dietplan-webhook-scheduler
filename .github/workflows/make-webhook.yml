@@ -1,6 +1,7 @@
 name: Trigger Make Webhook
 
 on:
+  workflow_dispatch:       # allows manual run
   schedule:
     - cron: '30 0 * * *'   # 06:00 IST
     - cron: '30 4 * * *'   # 10:00 IST
