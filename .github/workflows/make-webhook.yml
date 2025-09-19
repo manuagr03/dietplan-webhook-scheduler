@@ -9,8 +9,8 @@ on:
   schedule:
     - cron: '30 0 * * *'   # 06:00 IST
     - cron: '30 4 * * *'   # 10:00 IST
-    - cron: '23 11 * * *'  # 20:00 IST
-    - cron: '26 11 * * *'  # 21:00 IST
+    - cron: '10 12 * * *'  # 20:00 IST
+    - cron: '13 12 * * *'  # 21:00 IST
 
 jobs:
   call-make:
@@ -47,7 +47,7 @@ jobs:
           case "$hour" in
             0) SLOT="morning" ;;
             4) SLOT="midday" ;;
-            14) SLOT="evening" ;;
+            12) SLOT="evening" ;;
             15) SLOT="night" ;;
             *) SLOT="unknown" ;;
           esac
