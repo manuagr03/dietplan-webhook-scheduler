@@ -1,11 +1,12 @@
 name: Trigger Make Webhook
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '30 0 * * *'   # 06:00 IST
     - cron: '30 4 * * *'   # 10:00 IST
     - cron: '37 12 * * *'  # 20:00 IST
-    - cron: '01 14 * * *'  # 21:00 IST
+    - cron: '01 13 * * *'  # 21:00 IST
 
 jobs:
   call-make:
@@ -18,7 +19,7 @@ jobs:
             0) SLOT="morning" ;;
             4) SLOT="midday" ;;
             12) SLOT="evening" ;;
-            15) SLOT="night" ;;
+            13) SLOT="night" ;;
             *) SLOT="unknown" ;;
           esac
 
