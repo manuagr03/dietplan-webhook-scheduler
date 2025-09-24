@@ -14,20 +14,24 @@ jobs:
     steps:
       - name: Determine slot and call Make webhook
         run: |
-          hour=$(date +'%H')
-          case "$hour" in
-            0) SLOT="morning" ;;
-            4) SLOT="midday" ;;
-            14) SLOT="evening" ;;
-            16) SLOT="night" ;;
-            *) SLOT="unknown" ;;
-          esac
+          if [[ "${{ github.event.schedule }}" == "30 0 * * *" ]]; then
+            SLOT="morning"
+          elif [[ "${{ github.event.schedule }}" == "30 4 * * *" ]]; then
+            SLOT="midday"
+          elif [[ "${{ github.event.schedule }}" == "30 14 * * *" ]]; then
+            SLOT="evening"
+          elif [[ "${{ github.event.schedule }}" == "30 16 * * *" ]]; then
+            SLOT="night"
+          else
+            SLOT="unknown"
+          fi
+
+          echo "Determined slot: $SLOT"
 
           if [ "$SLOT" != "unknown" ]; then
-            echo "Determined slot: $SLOT"
             curl -X POST -H "Content-Type: application/json" \
                  -d "{\"slot\":\"$SLOT\"}" \
                  "${{ secrets.DIET_PLAN_AUTOMATOR }}"
           else
-            echo "No slot to send for hour $hour"
+            echo "Skipping webhook call because slot is unknown"
           fi
