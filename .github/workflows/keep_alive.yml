@@ -9,4 +9,4 @@ jobs:
     steps:
       - name: Curl request to Space
         run: |
-          curl -s https://huggingface.co/spaces/manuagr03/career_conversation > /dev/null
+          curl -s https://manuagr03-career-conversation.hf.space/ > /dev/null
