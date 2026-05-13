@@ -12,3 +12,4 @@ jobs:
           curl -s -o /dev/null -w "%{http_code}" https://manuagr03-career-conversation.hf.space/
           curl -s -o /dev/null -w "%{http_code}" https://manuagr03-deep-research.hf.space/
           curl -s -o /dev/null -w "%{http_code}" https://manuagr03-medical.hf.space/
+          curl -s -o /dev/null -w "%{http_code}" https://manuagr03-career-agent.hf.space
